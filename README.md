@@ -1,2 +1,2 @@
 # OpenDome
-OS implementation for the AZDome Dashcam-Companion
+This is an Open-Source-Implementation for the Companion-App for Azdome Daschcams.
