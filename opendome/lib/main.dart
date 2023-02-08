@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import 'package:video_player/video_player.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,13 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const StackedVideoView(title: 'Flutter Demo Home Page'),
+      home: const StackedVideoView(),
     );
   }
 }
 
 class StackedVideoView extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
   final String title;
 
   void playVideo(){
