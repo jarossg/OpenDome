@@ -38,7 +38,7 @@ class StackedVideoView extends StatelessWidget {
     return ViewModelBuilder<StackedVideoViewModel>.reactive(
       viewModelBuilder: () => StackedVideoViewModel(),
       onModelReady: (model) {
-        model.initialize('http://1192.168.1.254:8192');
+        model.initialize('http://192.168.1.254:8192');
       },
       builder: (context, model, child){
         return FittedBox(
