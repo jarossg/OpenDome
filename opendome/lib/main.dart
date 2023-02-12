@@ -15,24 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const StackedVideoView(),
+      home: StackedVideoView(),
     );
   }
 }
 
 class StackedVideoView extends StatelessWidget {
-  final String title;
-
-  void playVideo(){
-    videoPlayerController.play();
-    notifyListeners();
-  }
-
-  void pauseVideo(){
-    videoPlayerController.pause();
-    notifyListeners();
-  }
-
   
   @override
   Widget build(BuildContext context){
@@ -45,19 +33,12 @@ class StackedVideoView extends StatelessWidget {
         return FittedBox(
           fit: BoxFit.cover,
 
-          child GestureDetector(
-            onTap: () =>
-            model.videoPlayerController.value.isPlaying
-                ? model.pauseVideo()
-                : model.playVideo(),
-          
-            
-            child: SizedBox(
-              height: model.videoPlayerController.value.size?.height ?? 0,
-              width: model.videoPlayerController.value.size?.width ?? 0,
-              child: VideoPlayer(model.videoPlayerController),
-            ),
+          child: SizedBox(
+            height: model.videoPlayerController.value.size?.height ?? 0,
+            width: model.videoPlayerController.value.size?.width ?? 0,
+            child: VideoPlayer(model.videoPlayerController),
           ),
+          
         );
       },
     );
@@ -66,10 +47,10 @@ class StackedVideoView extends StatelessWidget {
 
 class StackedVideoViewModel extends BaseViewModel {
 
-  VideoPlayerController videoPlayerController;
+  VideoPlayerController videoPlayerController = VideoPlayerController.network("http://localhost");
 
   void initialize(String videoUrl) {
-    videoPlayerController = VideoPlayerController.network(videoUrl);
+    videoPlayerController = VideoPlayerController.network(videoUrl) ;
     videoPlayerController.initialize().then((value) {
       notifyListeners();
     });
