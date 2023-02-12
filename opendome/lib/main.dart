@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
-import 'package:video_player/video_player.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart';
+
+import 'package:opendome/Screens/Stream.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,50 +17,41 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StackedVideoView(),
+      home: MainView(title: 'OpenDome'),
     );
   }
 }
 
-class StackedVideoView extends StatelessWidget {
-  
+class MainView extends StatefulWidget{
+  const MainView({super.key, required this.title});
+
+  final String title;
+
   @override
-  Widget build(BuildContext context){
-    return ViewModelBuilder<StackedVideoViewModel>.reactive(
-      viewModelBuilder: () => StackedVideoViewModel(),
-      onModelReady: (model) {
-        model.initialize('http://192.168.1.254:8192');
-      },
-      builder: (context, model, child){
-        return FittedBox(
-          fit: BoxFit.cover,
-
-          child: SizedBox(
-            height: model.videoPlayerController.value.size?.height ?? 0,
-            width: model.videoPlayerController.value.size?.width ?? 0,
-            child: VideoPlayer(model.videoPlayerController),
-          ),
-          
-        );
-      },
-    );
-  }
+  State<MainView> createState() => MainViewState();
 }
 
-class StackedVideoViewModel extends BaseViewModel {
-
-  VideoPlayerController videoPlayerController = VideoPlayerController.network("http://localhost");
-
-  void initialize(String videoUrl) {
-    videoPlayerController = VideoPlayerController.network(videoUrl) ;
-    videoPlayerController.initialize().then((value) {
-      notifyListeners();
-    });
+class MainViewState extends State<MainView>{
+  void stream() async{
+    var response = await http.get(Uri.parse("http://192.168.1.254:80?custom=1&cmd=2019"));
+    if(response.statusCode == 200){
+      var xmlDocument = XmlDocument.parse(response.body);
+      var streamUrl = xmlDocument.getAttribute('MovieLiveViewLink');
+      
+      if(streamUrl != null){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StackedVideoView(url: streamUrl)));
+      }
+    }   
   }
 
   @override
-  void dispose() {
-    videoPlayerController.dispose();
-    super.dispose();
+  Widget build(BuildContext context){
+    return Scaffold(
+      //appBar: AppBar(title: Text(Widget.title),),
+
+      body: Center(
+        child: ElevatedButton(child: Text("Stream"), onPressed: stream,),
+      ),
+    );
   }
 }
