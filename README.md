@@ -10,6 +10,6 @@ My Aim is to uses this information, to imitate the communication.
 Every Request goes to 192.168.1.254:80/?custom=<>&cmd=<>
 | custom | cmd | Response | Effect |
 |--------|-----|----------|--------|
-|  1     | 2019|  <?xml version="1.0" encoding="UTF-8" ?><LIST><MovieLiveViewLink>http://192.168.1.254:8192</MovieLiveViewLink><PhotoLiveViewLink>http://192.168.1.254:8192</PhotoLiveViewLink></LIST>        |Returns Stream-URLs        |
+|  1     | 2019| List with MovieLiveViewLink and PhotoLiveViewLink         |Returns Stream-URLs        |
 |        |     |          |        |
 |        |     |          |        |
